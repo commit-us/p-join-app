@@ -9,8 +9,7 @@
     "npm": ">=12.2.3"
   },
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "apps/*"
   ],
   "scripts": {
     "dev:web": "npm run dev --workspace=@pjoin/web",
@@ -18,8 +17,16 @@
     "build": "npm run build --workspace=@pjoin/web",
     "start:web": "npm run start --workspace=@pjoin/web",
     "start:api": "npm run start --workspace=@pjoin/api",
-    "db:generate": "npm run generate --workspace=@pjoin/database",
-    "db:migrate": "npm run migrate:dev --workspace=@pjoin/database",
-    "db:studio": "npm run studio --workspace=@pjoin/database"
+    "db:generate": "npm run generate --workspace=@pjoin/api",
+    "db:migrate": "npm run migrate:dev --workspace=@pjoin/api",
+    "db:studio": "npm run studio --workspace=@pjoin/api",
+    "lint": "eslint apps eslint.config.mjs",
+    "lint:fix": "npm run lint -- --fix"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.4.6",
+    "globals": "16.5.0"
   }
 }

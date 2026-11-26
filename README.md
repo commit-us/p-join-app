@@ -1,23 +1,41 @@
 # P Join · 앱 저장소
 
-이 저장소는 npm workspaces 기반 JavaScript 모노레포입니다. Next.js 웹 앱, Express API, 공용 UI·API 계약, Prisma 데이터베이스 패키지를 함께 관리합니다. 제품 요구사항, 화면 설계, 개발 환경, ERD와 API 계약은 [프로젝트 문서 안내](docs/README.md)에서 확인할 수 있습니다.
+이 저장소는 npm workspaces 기반 JavaScript 모노레포입니다. Next.js 웹과 Express API를 함께 관리합니다. 명세는 [프로젝트 문서 안내](docs/README.md)에서 확인합니다.
 
 ## 디렉터리 구조
 
 ```text
 apps/
-  web/                 Next.js App Router
-  api/                 Express API
-packages/
-  contracts/           웹·API 공유 계약
-  database/            Prisma 스키마·마이그레이션·클라이언트
-  ui/                  공용 UI 컴포넌트
-docs/                  제품 문서 Git 서브모듈
+  web/
+    public/
+    src/
+      app/             페이지·레이아웃 (JavaScript)
+      features/        프로젝트·북마크·좋아요·지원
+      components/      공통 UI
+      lib/api/         API 호출·오류 처리
+      styles/          공통 스타일
+  api/
+    prisma/
+      schema.prisma    Prisma 공통 설정
+      models/          ERD 테이블별 .prisma 파일
+      migrations/
+    prisma.config.js
+    src/
+      app.js
+      server.js
+      routes/
+      modules/         기능별 API 모듈
+      middleware/
+      config/
+      db/client.js     Prisma 클라이언트
+ docs/                 문서 Git 서브모듈
 ```
 
-Prisma 모델은 ERD 테이블별 `.prisma` 파일로 `packages/database/prisma/models/`에 둡니다. 통합 설정은 `schema.prisma`에 두고, 모델 간 관계는 파일을 나누어도 연결됩니다.
+Prisma는 API 앱이 관리합니다. 웹은 API를 통해 데이터에 접근합니다. 화면과 기능별 빈 폴더는 기본 골격이며 업무 기능은 아직 구현하지 않았습니다.
 
 ## 로컬 실행
+
+코드 검사는 루트에서 `npm run lint`, 자동 수정 가능한 항목 처리는 `npm run lint:fix`로 실행합니다. Next.js·React 기본 검사와 선언되지 않은 변수·엄격한 동등 비교 검사를 적용합니다. 미사용 변수와 `const` 권장은 경고이며, 의도적으로 사용하지 않는 함수 인자는 `_`로 시작합니다. 서식과 명명 규칙은 별도로 강제하지 않습니다.
 
 Node.js와 npm 버전은 [기술 스택 문서](docs/06_tech_stack.md)를 따릅니다. `.env.example`을 `.env`로 복사한 뒤 의존성을 설치하고 PostgreSQL을 시작합니다.
 
