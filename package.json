@@ -1,0 +1,25 @@
+{
+  "name": "p-join-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "npm@12.2.3",
+  "engines": {
+    "node": ">=24.22.3",
+    "npm": ">=12.2.3"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace=@pjoin/web",
+    "dev:api": "npm run dev --workspace=@pjoin/api",
+    "build": "npm run build --workspace=@pjoin/web",
+    "start:web": "npm run start --workspace=@pjoin/web",
+    "start:api": "npm run start --workspace=@pjoin/api",
+    "db:generate": "npm run generate --workspace=@pjoin/database",
+    "db:migrate": "npm run migrate:dev --workspace=@pjoin/database",
+    "db:studio": "npm run studio --workspace=@pjoin/database"
+  }
+}

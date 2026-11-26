@@ -1,0 +1,9 @@
+model TechStack {
+  id             String   @id @default(uuid()) @db.Uuid
+  name           String   @unique
+  searchKeywords String?  @map("search_keywords")
+  logoUrl        String?  @map("logo_url")
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("tech_stacks")
+}

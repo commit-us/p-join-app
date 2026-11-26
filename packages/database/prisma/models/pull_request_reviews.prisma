@@ -1,0 +1,22 @@
+enum PullRequestReviewResult {
+  APPROVED          @map("approved")
+  CHANGES_REQUESTED @map("changes_requested")
+}
+
+model PullRequestReview {
+  id                String              @id @default(uuid()) @db.Uuid
+  pullRequestId     String              @map("pull_request_id") @db.Uuid
+  githubReviewId    String?             @unique @map("github_review_id")
+  reviewerUserId    String?             @map("reviewer_user_id") @db.Uuid
+  reviewerLogin     String              @map("reviewer_login")
+  result            PullRequestReviewResult
+  comment           String?
+  reviewedCommitSha String              @map("reviewed_commit_sha")
+  submittedAt       DateTime            @map("submitted_at") @db.Timestamptz(6)
+  syncedAt          DateTime            @map("synced_at") @db.Timestamptz(6)
+  pullRequest       PullRequest         @relation(fields: [pullRequestId], references: [id], onDelete: Cascade)
+  reviewer          User?               @relation("PullRequestReviewer", fields: [reviewerUserId], references: [id], onDelete: SetNull)
+
+  @@index([pullRequestId, submittedAt])
+  @@map("pull_request_reviews")
+}

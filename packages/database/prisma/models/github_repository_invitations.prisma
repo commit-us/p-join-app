@@ -1,0 +1,28 @@
+// ERD에서 제안 상태인 테이블. 제품 범위 확정 전에는 마이그레이션하지 않습니다.
+enum GithubRepositoryInvitationStatus {
+  PENDING         @map("PENDING")
+  ACTIVE          @map("ACTIVE")
+  ALREADY_MEMBER  @map("ALREADY_MEMBER")
+  FAILED          @map("FAILED")
+  CANCELLED       @map("CANCELLED")
+}
+
+model GithubRepositoryInvitation {
+  id                  String                     @id @default(uuid()) @db.Uuid
+  repositoryId        String                     @map("repository_id") @db.Uuid
+  applicationId       String?                    @map("application_id") @db.Uuid
+  githubUserId        BigInt                     @map("github_user_id")
+  githubLogin         String                     @map("github_login")
+  githubInvitationId  BigInt?                    @map("github_invitation_id")
+  requestedPermission String                     @map("requested_permission")
+  invitationStatus    GithubRepositoryInvitationStatus @map("invitation_status")
+  invitedAt           DateTime?                  @map("invited_at") @db.Timestamptz(6)
+  accessConfirmedAt   DateTime?                  @map("access_confirmed_at") @db.Timestamptz(6)
+  lastCheckedAt       DateTime?                  @map("last_checked_at") @db.Timestamptz(6)
+  lastError           String?                    @map("last_error")
+  repository          GithubRepository           @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  application         Application?               @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+
+  @@unique([repositoryId, githubUserId])
+  @@map("github_repository_invitations")
+}

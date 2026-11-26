@@ -1,0 +1,31 @@
+enum PullRequestState {
+  OPEN   @map("open")
+  CLOSED @map("closed")
+  MERGED @map("merged")
+}
+
+model PullRequest {
+  id               String                @id @default(uuid()) @db.Uuid
+  repositoryId     String                @map("repository_id") @db.Uuid
+  githubPrNumber   Int                   @map("github_pr_number")
+  authorUserId     String?               @map("author_user_id") @db.Uuid
+  authorLogin      String                @map("author_login")
+  title            String
+  body             String?
+  baseBranch       String                @map("base_branch")
+  headBranch       String                @map("head_branch")
+  state            PullRequestState
+  headCommitSha    String                @map("head_commit_sha")
+  githubCreatedAt  DateTime?             @map("github_created_at") @db.Timestamptz(6)
+  githubUpdatedAt  DateTime?             @map("github_updated_at") @db.Timestamptz(6)
+  mergedAt         DateTime?             @map("merged_at") @db.Timestamptz(6)
+  syncedAt         DateTime              @map("synced_at") @db.Timestamptz(6)
+  reviewRequests   Json                  @default("[]") @map("review_requests")
+  repository       GithubRepository      @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  author           User?                 @relation("PullRequestAuthor", fields: [authorUserId], references: [id], onDelete: SetNull)
+  reviews          PullRequestReview[]
+
+  @@unique([repositoryId, githubPrNumber])
+  @@index([repositoryId, state, githubUpdatedAt])
+  @@map("pull_requests")
+}

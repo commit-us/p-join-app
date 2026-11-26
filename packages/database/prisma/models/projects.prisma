@@ -1,0 +1,35 @@
+enum ProjectLifecycleStatus {
+  ACTIVE    @map("active")
+  COMPLETED @map("completed")
+  STOPPED   @map("stopped")
+}
+
+model Project {
+  id                    String                   @id @default(uuid()) @db.Uuid
+  ownerId               String                   @map("owner_id") @db.Uuid
+  title                 String
+  description           String
+  recruitmentStartDate  DateTime?                @map("recruitment_start_date") @db.Date
+  recruitmentEndDate    DateTime?                @map("recruitment_end_date") @db.Date
+  lifecycleStatus       ProjectLifecycleStatus   @default(ACTIVE) @map("lifecycle_status")
+  version               Int                      @default(1)
+  deletedAt             DateTime?                @map("deleted_at") @db.Timestamptz(6)
+  weeklyGoals           Json?                    @map("weekly_goals")
+  goalsUpdatedBy        String?                  @map("goals_updated_by") @db.Uuid
+  goalsUpdatedAt        DateTime?                @map("goals_updated_at") @db.Timestamptz(6)
+  techStackIds          Json                     @default("[]") @map("tech_stack_ids")
+  createdAt             DateTime                 @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt             DateTime                 @updatedAt @map("updated_at") @db.Timestamptz(6)
+  owner                 User                     @relation("ProjectOwner", fields: [ownerId], references: [id], onDelete: Restrict)
+  goalsUpdater          User?                    @relation("ProjectGoalUpdater", fields: [goalsUpdatedBy], references: [id], onDelete: SetNull)
+  applications          Application[]
+  members               ProjectMember[]
+  likes                 Like[]
+  bookmarks             Bookmark[]
+  schedules             Schedule[]
+  repositories          GithubRepository[]
+
+  @@index([ownerId, createdAt])
+  @@index([lifecycleStatus, recruitmentEndDate])
+  @@map("projects")
+}

@@ -1,0 +1,35 @@
+enum UserStatus {
+  ACTIVE    @map("active")
+  WITHDRAWN @map("withdrawn")
+}
+
+model User {
+  id                    String                @id @default(uuid()) @db.Uuid
+  loginId               String?               @unique @map("login_id")
+  email                 String?               @unique
+  passwordHash          String?               @map("password_hash")
+  nickname              String                @unique
+  bio                   String?
+  portfolioUrl          String?               @map("portfolio_url")
+  profileImageKey       String?               @map("profile_image_key")
+  status                UserStatus            @default(ACTIVE)
+  createdAt             DateTime              @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt             DateTime              @updatedAt @map("updated_at") @db.Timestamptz(6)
+  withdrawnAt           DateTime?             @map("withdrawn_at") @db.Timestamptz(6)
+  techStackIds          Json                  @default("[]") @map("tech_stack_ids")
+  externalAccounts      UserExternalAccount[]
+  ownedProjects         Project[]             @relation("ProjectOwner")
+  goalUpdatedProjects   Project[]             @relation("ProjectGoalUpdater")
+  applications          Application[]         @relation("ApplicationApplicant")
+  handledApplications   Application[]         @relation("ApplicationHandler")
+  memberships           ProjectMember[]
+  likes                 Like[]
+  bookmarks             Bookmark[]
+  schedules             Schedule[]
+  receivedNotifications Notification[]        @relation("NotificationRecipient")
+  triggeredNotifications Notification[]       @relation("NotificationActor")
+  authoredPullRequests  PullRequest[]         @relation("PullRequestAuthor")
+  reviews               PullRequestReview[]   @relation("PullRequestReviewer")
+
+  @@map("users")
+}
