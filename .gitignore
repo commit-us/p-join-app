@@ -9,3 +9,15 @@ coverage/
 !.env.example
 npm-debug.log*
 *.tsbuildinfo
+
+# Local agent instructions and skills (at any directory depth)
+[Aa][Gg][Ee][Nn][Tt].md
+[Aa][Gg][Ee][Nn][Tt][Ss].md
+[Cc][Ll][Aa][Uu][Dd][Ee].md
+[Cc][Ll][Aa][Uu][Dd][Ee].local.md
+[Ss][Kk][Ii][Ll][Ll].md
+[Ss][Kk][Ii][Ll][Ll]/
+[Ss][Kk][Ii][Ll][Ll][Ss]/
+.agents/
+.claude/
+.codex/
