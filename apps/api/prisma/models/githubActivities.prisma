@@ -1,14 +1,13 @@
 model GithubActivity {
-  id                 String           @id @default(uuid()) @db.Uuid
+  activityId         String           @id @default(uuid()) @map("activity_id") @db.Uuid
   repositoryId       String           @map("repository_id") @db.Uuid
-  externalActivityId String           @map("external_activity_id")
+  externalActivityId String           @unique @map("external_activity_id")
   actorLogin         String?          @map("actor_login")
   activityType       String           @map("activity_type")
   occurredAt         DateTime         @map("occurred_at") @db.Timestamptz(6)
   syncedAt           DateTime         @map("synced_at") @db.Timestamptz(6)
-  repository         GithubRepository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  repository         GithubRepository @relation(fields: [repositoryId], references: [repositoryId], onDelete: Cascade)
 
-  @@unique([repositoryId, externalActivityId])
   @@index([repositoryId, occurredAt])
   @@map("github_activities")
 }

@@ -4,19 +4,19 @@ enum IssueState {
 }
 
 model Issue {
-  id                String           @id @default(uuid()) @db.Uuid
+  issueId           String           @id @default(uuid()) @map("issue_id") @db.Uuid
   repositoryId      String           @map("repository_id") @db.Uuid
   githubIssueNumber Int              @map("github_issue_number")
   title             String
   body              String?
-  state             IssueState
+  status            IssueState
   authorLogin       String?          @map("author_login")
   assigneeLogin     String?          @map("assignee_login")
-  githubCreatedAt   DateTime?        @map("github_created_at") @db.Timestamptz(6)
-  githubUpdatedAt   DateTime?        @map("github_updated_at") @db.Timestamptz(6)
+  createdAt         DateTime?        @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime?        @map("updated_at") @db.Timestamptz(6)
   closedAt          DateTime?        @map("closed_at") @db.Timestamptz(6)
   syncedAt          DateTime         @map("synced_at") @db.Timestamptz(6)
-  repository        GithubRepository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  repository        GithubRepository @relation(fields: [repositoryId], references: [repositoryId], onDelete: Cascade)
 
   @@unique([repositoryId, githubIssueNumber])
   @@map("issues")
