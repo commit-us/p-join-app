@@ -1,0 +1,40 @@
+:root {
+  color-scheme: light;
+  font-family: Pretendard, "Apple SD Gothic Neo", sans-serif;
+  color: #1c1c1c;
+  background: #fff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+.page {
+  width: min(1120px, calc(100% - 48px));
+  margin: 120px auto;
+}
+
+.eyebrow {
+  margin: 0 0 16px;
+  color: #666;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(36px, 5vw, 56px);
+  line-height: 1.15;
+}
+
+.description {
+  margin-top: 20px;
+  color: #666;
+  font-size: 18px;
+}
