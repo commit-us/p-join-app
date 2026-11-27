@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test": "node --test \"src/**/*.test.js\"",
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
     "generate": "prisma generate",
